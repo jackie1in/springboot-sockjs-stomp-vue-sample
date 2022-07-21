@@ -49,23 +49,31 @@ var vm = new Vue({
 				console.log(JSON.parse(val.body));
 				vm.list1 = JSON.parse(val.body);
 			});
-
-			stompClient.subscribe('/stock/price-fast', function (val) {
-				console.log(val);
-				console.log(JSON.parse(val.body));
-				vm.list2 = JSON.parse(val.body);
-			});
 		};
 		stompClient.onWebSocketClose = event => {
 			self.connected = false;
 		};
 		stompClient.activate();
-		if(stompClient.active){
+		if(stompClient.connected){
 		 	// 订阅
+		 	stompClient.subscribe('/stock/price-fast', function (val) {
+				console.log(val);
+				console.log(JSON.parse(val.body));
+				vm.list2 = JSON.parse(val.body);
+			});
 		} else {
 			// 延时执行subscribe
-
-			// 清除计时器
+			let timer = setInterval(function(){
+			    // 清除计时器
+			    if(stompClient.connected){
+                     stompClient.subscribe('/stock/price-fast', function (val) {
+                        console.log(val);
+                        console.log(JSON.parse(val.body));
+                        vm.list2 = JSON.parse(val.body);
+                    });
+                    clearInterval(timer)
+			    }
+			},5000)
 		}
 	},
 })
