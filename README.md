@@ -16,7 +16,7 @@ This project demonstrates on the use of Springboot, SockJs, Stomp and Vue.js
 1. The application can also be started on command line.
 
 ```console
-mvn spring-boot run
+mvn spring-boot:run
 ```
 
 1. Go to http://localhost:8080 and see the numbers updated periodically without manually refreshing the page.
